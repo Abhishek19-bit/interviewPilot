@@ -129,31 +129,39 @@ def interview():
     current_question = Question.query.get(question_ids[current_index])
     form = AnswerForm()
     
-    if form.validate_on_submit():
-        # Save the answer
-        answer = Answer(
-            interview_id=interview_id,
-            question_id=current_question.id,
-            user_answer=form.answer.data
-        )
+    if request.method == 'POST':
+        # Check if this is a skip action
+        is_skip = request.form.get('skip_question') == 'true'
         
-        # Calculate feedback and score
-        feedback_data = calculate_feedback(current_question, form.answer.data)
-        answer.score = feedback_data['score']
-        answer.feedback = feedback_data['feedback']
-        
-        db.session.add(answer)
-        db.session.commit()
-        
-        # Move to next question
-        session['current_question_index'] = current_index + 1
-        
-        # Check if this was the last question
-        if session['current_question_index'] >= len(question_ids):
-            return redirect(url_for('complete_interview'))
-        
-        flash('Answer submitted successfully!', 'success')
-        return redirect(url_for('interview'))
+        if is_skip or form.validate_on_submit():
+            # Use skip message if skipping, otherwise use user's answer
+            user_answer = "Question skipped by user." if is_skip else form.answer.data
+            
+            # Save the answer
+            answer = Answer(
+                interview_id=interview_id,
+                question_id=current_question.id,
+                user_answer=user_answer
+            )
+            
+            # Calculate feedback and score
+            feedback_data = calculate_feedback(current_question, user_answer)
+            answer.score = feedback_data['score']
+            answer.feedback = feedback_data['feedback']
+            
+            db.session.add(answer)
+            db.session.commit()
+            
+            # Move to next question
+            session['current_question_index'] = current_index + 1
+            
+            # Check if this was the last question
+            if session['current_question_index'] >= len(question_ids):
+                return redirect(url_for('complete_interview'))
+            
+            message = 'Question skipped!' if is_skip else 'Answer submitted successfully!'
+            flash(message, 'success')
+            return redirect(url_for('interview'))
     
     progress_percentage = ((current_index + 1) / len(question_ids)) * 100
     

@@ -70,6 +70,7 @@
                     
                     <form method="POST" id="answerForm">
                         {{ form.hidden_tag() }}
+                        <input type="hidden" name="skip_action" id="skipAction" value="">
                         
                         <div class="mb-4">
                             {{ form.answer.label(class="form-label h5") }}
@@ -84,7 +85,7 @@
                         </div>
                         
                         <div class="d-flex justify-content-between">
-                            <button type="button" class="btn btn-outline-secondary" onclick="skipQuestion()">
+                            <button type="submit" class="btn btn-outline-secondary" onclick="doSkip()" name="skip_question" value="true">
                                 <i class="fas fa-forward me-1"></i>Skip Question
                             </button>
                             {{ form.submit(class="btn btn-primary btn-lg", id="submitBtn") }}

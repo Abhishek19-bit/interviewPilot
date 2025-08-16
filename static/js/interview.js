@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
         answerTextarea.focus();
     }
     
-    // Prevent form submission if already submitted
+    // Handle form submission
     const form = document.getElementById('answerForm');
     if (form) {
         form.addEventListener('submit', function(e) {
@@ -21,6 +21,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 e.preventDefault();
                 return false;
             }
+            
+            // Mark as submitted
             submitted = true;
             
             // Clear the timer
@@ -28,12 +30,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 clearInterval(timerInterval);
             }
             
-            // Disable submit button to prevent double submission
+            // Show loading state
             const submitBtn = document.getElementById('submitBtn');
             if (submitBtn) {
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
             }
+            
+            // Ensure form gets submitted
+            return true;
         });
     }
     
@@ -91,7 +96,6 @@ function autoSubmitAnswer() {
 function submitAnswer() {
     if (submitted) return;
     
-    const form = document.getElementById('answerForm');
     const answerTextarea = document.getElementById('answerTextarea');
     const submitBtn = document.getElementById('submitBtn');
     
@@ -102,28 +106,18 @@ function submitAnswer() {
         }
     }
     
-    // Mark as submitted and disable button
-    submitted = true;
-    
     // Clear the timer
     if (timerInterval) {
         clearInterval(timerInterval);
     }
     
+    // Click the submit button instead of calling form.submit()
     if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
-    }
-    
-    // Submit the form directly
-    if (form) {
-        form.submit();
+        submitBtn.click();
     }
 }
 
-function skipQuestion() {
-    if (submitted) return;
-    
+function doSkip() {
     if (confirm('Are you sure you want to skip this question?')) {
         // Clear the timer
         if (timerInterval) {
@@ -136,15 +130,15 @@ function skipQuestion() {
             answerTextarea.value = "Question skipped by user.";
         }
         
-        // Mark as submitted
-        submitted = true;
-        
-        // Get the form and submit it directly
-        const form = document.getElementById('answerForm');
-        if (form) {
-            form.submit();
+        // Mark skip action
+        const skipAction = document.getElementById('skipAction');
+        if (skipAction) {
+            skipAction.value = "skip";
         }
+        
+        return true; // Allow form submission
     }
+    return false; // Prevent form submission if cancelled
 }
 
 // Add keyboard shortcuts
