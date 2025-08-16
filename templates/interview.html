@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+
+{% block title %}Interview in Progress - AI Interview Simulator{% endblock %}
+
+{% block extra_head %}
+<style>
+    .timer {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+    .timer.warning {
+        color: #ffc107;
+    }
+    .timer.danger {
+        color: #dc3545;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <!-- Progress Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="mb-0">
+                            <i class="fas fa-briefcase text-primary me-2"></i>
+                            {{ interview.role.replace('_', ' ').title() }} Interview
+                        </h5>
+                        <span class="badge bg-primary fs-6">
+                            Question {{ question_number }} of {{ total_questions }}
+                        </span>
+                    </div>
+                    
+                    <div class="progress mb-2" style="height: 8px;">
+                        <div class="progress-bar bg-gradient" 
+                             role="progressbar" 
+                             style="width: {{ progress }}%"
+                             aria-valuenow="{{ progress }}" 
+                             aria-valuemin="0" 
+                             aria-valuemax="100">
+                        </div>
+                    </div>
+                    <small class="text-muted">{{ "%.1f"|format(progress) }}% Complete</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Question Section -->
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card question-card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">
+                            <i class="fas fa-question-circle text-info me-2"></i>
+                            Question {{ question_number }}
+                        </h4>
+                        <div class="timer" id="timer">30s</div>
+                    </div>
+                </div>
+                
+                <div class="card-body">
+                    <div class="question-text mb-4">
+                        <p class="lead">{{ question.question_text }}</p>
+                    </div>
+                    
+                    <form method="POST" id="answerForm">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="mb-4">
+                            {{ form.answer.label(class="form-label h5") }}
+                            {{ form.answer(class="form-control", id="answerTextarea") }}
+                            {% if form.answer.errors %}
+                                <div class="text-danger mt-2">
+                                    {% for error in form.answer.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-outline-secondary" onclick="skipQuestion()">
+                                <i class="fas fa-forward me-1"></i>Skip Question
+                            </button>
+                            {{ form.submit(class="btn btn-primary btn-lg", id="submitBtn") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <div class="card interview-tips-card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-lightbulb text-warning me-2"></i>
+                        Tips for This Question
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Be specific and detailed
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Use technical terminology
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Provide real examples
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Explain your reasoning
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card interview-progress-card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-chart-pie text-info me-2"></i>
+                        Interview Progress
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="progress-info">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Completed:</span>
+                            <span class="fw-bold">{{ question_number - 1 }}/{{ total_questions }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Remaining:</span>
+                            <span class="fw-bold">{{ total_questions - question_number + 1 }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Time per Q:</span>
+                            <span class="fw-bold">30 seconds</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Auto-submit Modal -->
+<div class="modal fade" id="timeUpModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-clock text-warning me-2"></i>
+                    Time's Up!
+                </h5>
+            </div>
+            <div class="modal-body">
+                <p>The time limit for this question has been reached. Your answer will be submitted automatically.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="submitAnswer()">
+                    Continue
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/interview.js') }}"></script>
+{% endblock %}

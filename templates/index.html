@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="container">
+        <div class="row align-items-center min-vh-100">
+            <div class="col-lg-6">
+                <div class="hero-content">
+                    <h1 class="display-4 fw-bold mb-4 gradient-text">
+                        Master Your Next Interview
+                    </h1>
+                    <p class="lead mb-4 text-light-emphasis">
+                        Practice with AI-powered interview questions, get instant feedback, 
+                        and boost your confidence for real interviews.
+                    </p>
+                    
+                    <div class="hero-features mb-5">
+                        <div class="feature-item">
+                            <i class="fas fa-robot text-primary me-2"></i>
+                            <span>AI-Powered Feedback</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-chart-line text-success me-2"></i>
+                            <span>Performance Analytics</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-users text-info me-2"></i>
+                            <span>Role-Specific Questions</span>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-buttons">
+                        {% if current_user.is_authenticated %}
+                            <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-lg me-3">
+                                <i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard
+                            </a>
+                        {% else %}
+                            <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg me-3">
+                                <i class="fas fa-rocket me-2"></i>Get Started
+                            </a>
+                            <a href="{{ url_for('login') }}" class="btn btn-outline-light btn-lg">
+                                <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="hero-image text-center">
+                    <div class="feature-cards">
+                        <div class="feature-card floating-card">
+                            <i class="fas fa-brain fa-3x text-primary mb-3"></i>
+                            <h5>Smart Questions</h5>
+                            <p>Role-specific interview questions tailored to your career path</p>
+                        </div>
+                        
+                        <div class="feature-card floating-card" style="animation-delay: 0.2s;">
+                            <i class="fas fa-chart-bar fa-3x text-success mb-3"></i>
+                            <h5>Instant Analysis</h5>
+                            <p>Get immediate feedback and improvement suggestions</p>
+                        </div>
+                        
+                        <div class="feature-card floating-card" style="animation-delay: 0.4s;">
+                            <i class="fas fa-trophy fa-3x text-warning mb-3"></i>
+                            <h5>Track Progress</h5>
+                            <p>Monitor your improvement over time with detailed reports</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<section class="features-section py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold mb-3">Why Choose Our Platform?</h2>
+            <p class="lead text-muted">Everything you need to ace your next interview</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card feature-card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-clock fa-3x text-primary mb-3"></i>
+                        <h5 class="card-title">Timed Practice</h5>
+                        <p class="card-text">Simulate real interview conditions with timed questions</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card feature-card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-graduation-cap fa-3x text-success mb-3"></i>
+                        <h5 class="card-title">Learn & Improve</h5>
+                        <p class="card-text">Get personalized recommendations and learning resources</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card feature-card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-file-pdf fa-3x text-danger mb-3"></i>
+                        <h5 class="card-title">Export Results</h5>
+                        <p class="card-text">Download your performance reports for future reference</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section py-5">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-3 mb-4">
+                <div class="stat-item">
+                    <h3 class="stat-number text-primary">500+</h3>
+                    <p class="stat-label">Interview Questions</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stat-item">
+                    <h3 class="stat-number text-success">50+</h3>
+                    <p class="stat-label">Job Roles Covered</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stat-item">
+                    <h3 class="stat-number text-warning">95%</h3>
+                    <p class="stat-label">Success Rate</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stat-item">
+                    <h3 class="stat-number text-info">24/7</h3>
+                    <p class="stat-label">Available</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

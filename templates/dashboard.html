@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - AI Interview Simulator{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <!-- Welcome Section -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card welcome-card">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h2 class="card-title mb-3">
+                                <i class="fas fa-hand-wave text-warning me-2"></i>
+                                Welcome back, {{ current_user.username }}!
+                            </h2>
+                            <p class="card-text lead">
+                                Ready to practice your interview skills? Choose a role and start your session.
+                            </p>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <i class="fas fa-user-tie fa-5x text-primary opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Row -->
+    <div class="row mb-5">
+        <div class="col-md-4 mb-3">
+            <div class="card stats-card">
+                <div class="card-body text-center">
+                    <i class="fas fa-clipboard-list fa-3x text-primary mb-3"></i>
+                    <h3 class="display-6 fw-bold">{{ total_interviews }}</h3>
+                    <p class="text-muted">Interviews Completed</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="card stats-card">
+                <div class="card-body text-center">
+                    <i class="fas fa-chart-line fa-3x text-success mb-3"></i>
+                    <h3 class="display-6 fw-bold">{{ avg_score }}%</h3>
+                    <p class="text-muted">Average Score</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="card stats-card">
+                <div class="card-body text-center">
+                    <i class="fas fa-trophy fa-3x text-warning mb-3"></i>
+                    <h3 class="display-6 fw-bold">
+                        {% if avg_score >= 80 %}Expert{% elif avg_score >= 60 %}Advanced{% elif avg_score >= 40 %}Intermediate{% else %}Beginner{% endif %}
+                    </h3>
+                    <p class="text-muted">Current Level</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Start Interview Section -->
+    <div class="row mb-5">
+        <div class="col-lg-8">
+            <div class="card start-interview-card">
+                <div class="card-header">
+                    <h4 class="mb-0">
+                        <i class="fas fa-play-circle text-success me-2"></i>
+                        Start New Interview
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('start_interview') }}">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="mb-4">
+                            {{ form.role.label(class="form-label h5") }}
+                            {{ form.role(class="form-select form-select-lg") }}
+                        </div>
+                        
+                        <div class="interview-info mb-4">
+                            <div class="row text-center">
+                                <div class="col-4">
+                                    <i class="fas fa-clock text-info mb-2 d-block"></i>
+                                    <small class="text-muted">30 seconds per question</small>
+                                </div>
+                                <div class="col-4">
+                                    <i class="fas fa-list-ol text-warning mb-2 d-block"></i>
+                                    <small class="text-muted">5 questions total</small>
+                                </div>
+                                <div class="col-4">
+                                    <i class="fas fa-chart-bar text-success mb-2 d-block"></i>
+                                    <small class="text-muted">Instant feedback</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid">
+                            {{ form.submit(class="btn btn-success btn-lg") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card tips-card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-lightbulb text-warning me-2"></i>
+                        Interview Tips
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Be specific in your answers
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Use technical keywords
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Provide examples when possible
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Take your time to think
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Interviews -->
+    {% if recent_interviews %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">
+                        <i class="fas fa-history text-info me-2"></i>
+                        Recent Interviews
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Role</th>
+                                    <th>Score</th>
+                                    <th>Date</th>
+                                    <th>Performance</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for interview in recent_interviews %}
+                                <tr>
+                                    <td>
+                                        <i class="fas fa-briefcase text-muted me-2"></i>
+                                        {{ interview.role.replace('_', ' ').title() }}
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-{% if interview.total_score >= 70 %}success{% elif interview.total_score >= 40 %}warning{% else %}danger{% endif %}">
+                                            {{ interview.total_score }}%
+                                        </span>
+                                    </td>
+                                    <td>{{ interview.completed_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                    <td>
+                                        {% if interview.total_score >= 80 %}
+                                            <span class="text-success"><i class="fas fa-star"></i> Excellent</span>
+                                        {% elif interview.total_score >= 60 %}
+                                            <span class="text-info"><i class="fas fa-thumbs-up"></i> Good</span>
+                                        {% elif interview.total_score >= 40 %}
+                                            <span class="text-warning"><i class="fas fa-meh"></i> Fair</span>
+                                        {% else %}
+                                            <span class="text-danger"><i class="fas fa-thumbs-down"></i> Needs Work</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="{{ url_for('results', interview_id=interview.id) }}" 
+                                           class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-eye me-1"></i>View Results
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

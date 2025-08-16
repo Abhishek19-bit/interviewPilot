@@ -1,0 +1,237 @@
+{% extends "base.html" %}
+
+{% block title %}Interview Results - AI Interview Simulator{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <!-- Header Section -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card results-header-card">
+                <div class="card-body text-center">
+                    <h2 class="card-title mb-3">
+                        <i class="fas fa-chart-line text-primary me-2"></i>
+                        Interview Results
+                    </h2>
+                    <h3 class="text-muted mb-4">{{ interview.role.replace('_', ' ').title() }}</h3>
+                    
+                    <div class="score-display">
+                        <div class="score-circle {{ insights.performance_color }}">
+                            <span class="score-number">{{ interview.total_score }}%</span>
+                            <span class="score-label">Overall Score</span>
+                        </div>
+                        <h4 class="performance-level text-{{ insights.performance_color }} mt-3">
+                            {{ insights.performance_level }} Performance
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Performance Overview -->
+    <div class="row mb-5">
+        <div class="col-md-4 mb-3">
+            <div class="card stats-card">
+                <div class="card-body text-center">
+                    <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
+                    <h3 class="display-6 fw-bold">{{ insights.high_performing_questions }}</h3>
+                    <p class="text-muted">Strong Answers</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="card stats-card">
+                <div class="card-body text-center">
+                    <i class="fas fa-clock fa-3x text-info mb-3"></i>
+                    <h3 class="display-6 fw-bold">{{ interview.answers|length }}</h3>
+                    <p class="text-muted">Questions Answered</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="card stats-card">
+                <div class="card-body text-center">
+                    <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+                    <h3 class="display-6 fw-bold">{{ insights.low_performing_questions }}</h3>
+                    <p class="text-muted">Areas to Improve</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detailed Results -->
+    <div class="row mb-5">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">
+                        <i class="fas fa-list-alt text-primary me-2"></i>
+                        Question-by-Question Analysis
+                    </h4>
+                </div>
+                <div class="card-body">
+                    {% for answer in interview.answers %}
+                    <div class="answer-analysis mb-4 p-3 border rounded">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <h6 class="fw-bold mb-1">Question {{ loop.index }}</h6>
+                            <span class="badge bg-{% if answer.score >= 70 %}success{% elif answer.score >= 40 %}warning{% else %}danger{% endif %} fs-6">
+                                {{ answer.score }}%
+                            </span>
+                        </div>
+                        
+                        <div class="question-text mb-3">
+                            <p class="text-muted mb-2"><strong>Question:</strong></p>
+                            <p>{{ answer.question.question_text }}</p>
+                        </div>
+                        
+                        <div class="user-answer mb-3">
+                            <p class="text-muted mb-2"><strong>Your Answer:</strong></p>
+                            <div class="bg-light p-3 rounded">
+                                {{ answer.user_answer }}
+                            </div>
+                        </div>
+                        
+                        <div class="feedback">
+                            <p class="text-muted mb-2"><strong>Feedback:</strong></p>
+                            <div class="alert alert-{% if answer.score >= 70 %}success{% elif answer.score >= 40 %}warning{% else %}danger{% endif %} mb-0">
+                                {{ answer.feedback }}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Insights Sidebar -->
+        <div class="col-lg-4">
+            <!-- Strengths & Weaknesses -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-chart-bar text-success me-2"></i>
+                        Performance Analysis
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if insights.strengths %}
+                    <div class="mb-4">
+                        <h6 class="text-success mb-3">
+                            <i class="fas fa-thumbs-up me-1"></i>Strengths
+                        </h6>
+                        <ul class="list-unstyled">
+                            {% for strength in insights.strengths %}
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                {{ strength }}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    
+                    {% if insights.weaknesses %}
+                    <div>
+                        <h6 class="text-warning mb-3">
+                            <i class="fas fa-exclamation-triangle me-1"></i>Areas for Improvement
+                        </h6>
+                        <ul class="list-unstyled">
+                            {% for weakness in insights.weaknesses %}
+                            <li class="mb-2">
+                                <i class="fas fa-arrow-right text-warning me-2"></i>
+                                {{ weakness }}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Suggested Resources -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-book text-info me-2"></i>
+                        Recommended Resources
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted mb-3">Improve your skills with these resources:</p>
+                    {% for resource in insights.suggested_resources %}
+                    <div class="mb-3">
+                        <a href="{{ resource.url }}" target="_blank" class="text-decoration-none">
+                            <div class="d-flex align-items-center p-2 border rounded hover-highlight">
+                                <i class="fas fa-external-link-alt text-primary me-3"></i>
+                                <div>
+                                    <div class="fw-bold">{{ resource.name }}</div>
+                                    <small class="text-muted">{{ resource.url | replace('https://', '') | replace('http://', '') | truncate(30) }}</small>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <!-- Actions -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-cogs text-secondary me-2"></i>
+                        Actions
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-primary">
+                            <i class="fas fa-redo me-2"></i>Take Another Interview
+                        </a>
+                        <a href="{{ url_for('interview_history') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-history me-2"></i>View All Results
+                        </a>
+                        <button class="btn btn-outline-info" onclick="window.print()">
+                            <i class="fas fa-print me-2"></i>Print Results
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Interview Metadata -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-md-3">
+                            <i class="fas fa-calendar text-info mb-2 d-block"></i>
+                            <strong>Date Completed</strong>
+                            <p class="text-muted mb-0">{{ interview.completed_at.strftime('%Y-%m-%d') }}</p>
+                        </div>
+                        <div class="col-md-3">
+                            <i class="fas fa-clock text-warning mb-2 d-block"></i>
+                            <strong>Time Completed</strong>
+                            <p class="text-muted mb-0">{{ interview.completed_at.strftime('%H:%M:%S') }}</p>
+                        </div>
+                        <div class="col-md-3">
+                            <i class="fas fa-briefcase text-success mb-2 d-block"></i>
+                            <strong>Role</strong>
+                            <p class="text-muted mb-0">{{ interview.role.replace('_', ' ').title() }}</p>
+                        </div>
+                        <div class="col-md-3">
+                            <i class="fas fa-hashtag text-primary mb-2 d-block"></i>
+                            <strong>Interview ID</strong>
+                            <p class="text-muted mb-0">#{{ interview.id }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
