@@ -49,23 +49,29 @@
             <div class="col-lg-6">
                 <div class="hero-image text-center">
                     <div class="feature-cards">
-                        <div class="feature-card floating-card">
-                            <i class="fas fa-brain fa-3x text-primary mb-3"></i>
-                            <h5>Smart Questions</h5>
-                            <p>Role-specific interview questions tailored to your career path</p>
-                        </div>
+                        <a href="{% if current_user.is_authenticated %}{{ url_for('dashboard') }}{% else %}{{ url_for('register') }}{% endif %}" class="text-decoration-none">
+                            <div class="feature-card floating-card clickable-card">
+                                <i class="fas fa-brain fa-3x text-primary mb-3"></i>
+                                <h5>Smart Questions</h5>
+                                <p>Role-specific interview questions tailored to your career path</p>
+                            </div>
+                        </a>
                         
-                        <div class="feature-card floating-card" style="animation-delay: 0.2s;">
-                            <i class="fas fa-chart-bar fa-3x text-success mb-3"></i>
-                            <h5>Instant Analysis</h5>
-                            <p>Get immediate feedback and improvement suggestions</p>
-                        </div>
+                        <a href="{% if current_user.is_authenticated %}{{ url_for('dashboard') }}{% else %}{{ url_for('register') }}{% endif %}" class="text-decoration-none">
+                            <div class="feature-card floating-card clickable-card" style="animation-delay: 0.2s;">
+                                <i class="fas fa-chart-bar fa-3x text-success mb-3"></i>
+                                <h5>Instant Analysis</h5>
+                                <p>Get immediate feedback and improvement suggestions</p>
+                            </div>
+                        </a>
                         
-                        <div class="feature-card floating-card" style="animation-delay: 0.4s;">
-                            <i class="fas fa-trophy fa-3x text-warning mb-3"></i>
-                            <h5>Track Progress</h5>
-                            <p>Monitor your improvement over time with detailed reports</p>
-                        </div>
+                        <a href="{% if current_user.is_authenticated %}{{ url_for('interview_history') }}{% else %}{{ url_for('register') }}{% endif %}" class="text-decoration-none">
+                            <div class="feature-card floating-card clickable-card" style="animation-delay: 0.4s;">
+                                <i class="fas fa-trophy fa-3x text-warning mb-3"></i>
+                                <h5>Track Progress</h5>
+                                <p>Monitor your improvement over time with detailed reports</p>
+                            </div>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -83,33 +89,39 @@
         
         <div class="row g-4">
             <div class="col-md-4">
-                <div class="card feature-card h-100">
-                    <div class="card-body text-center">
-                        <i class="fas fa-clock fa-3x text-primary mb-3"></i>
-                        <h5 class="card-title">Timed Practice</h5>
-                        <p class="card-text">Simulate real interview conditions with timed questions</p>
+                <a href="{% if current_user.is_authenticated %}{{ url_for('dashboard') }}{% else %}{{ url_for('register') }}{% endif %}" class="text-decoration-none">
+                    <div class="card feature-card h-100 clickable-card">
+                        <div class="card-body text-center">
+                            <i class="fas fa-clock fa-3x text-primary mb-3"></i>
+                            <h5 class="card-title">Timed Practice</h5>
+                            <p class="card-text">Simulate real interview conditions with timed questions</p>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
             
             <div class="col-md-4">
-                <div class="card feature-card h-100">
-                    <div class="card-body text-center">
-                        <i class="fas fa-graduation-cap fa-3x text-success mb-3"></i>
-                        <h5 class="card-title">Learn & Improve</h5>
-                        <p class="card-text">Get personalized recommendations and learning resources</p>
+                <a href="{% if current_user.is_authenticated %}{{ url_for('dashboard') }}{% else %}{{ url_for('register') }}{% endif %}" class="text-decoration-none">
+                    <div class="card feature-card h-100 clickable-card">
+                        <div class="card-body text-center">
+                            <i class="fas fa-graduation-cap fa-3x text-success mb-3"></i>
+                            <h5 class="card-title">Learn & Improve</h5>
+                            <p class="card-text">Get personalized recommendations and learning resources</p>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
             
             <div class="col-md-4">
-                <div class="card feature-card h-100">
-                    <div class="card-body text-center">
-                        <i class="fas fa-file-pdf fa-3x text-danger mb-3"></i>
-                        <h5 class="card-title">Export Results</h5>
-                        <p class="card-text">Download your performance reports for future reference</p>
+                <a href="{% if current_user.is_authenticated %}{{ url_for('interview_history') }}{% else %}{{ url_for('register') }}{% endif %}" class="text-decoration-none">
+                    <div class="card feature-card h-100 clickable-card">
+                        <div class="card-body text-center">
+                            <i class="fas fa-file-pdf fa-3x text-danger mb-3"></i>
+                            <h5 class="card-title">Export Results</h5>
+                            <p class="card-text">Download your performance reports for future reference</p>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
     </div>
