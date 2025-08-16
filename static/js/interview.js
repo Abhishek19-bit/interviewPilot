@@ -23,6 +23,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             submitted = true;
             
+            // Clear the timer
+            if (timerInterval) {
+                clearInterval(timerInterval);
+            }
+            
             // Disable submit button to prevent double submission
             const submitBtn = document.getElementById('submitBtn');
             if (submitBtn) {
@@ -88,28 +93,65 @@ function submitAnswer() {
     
     const form = document.getElementById('answerForm');
     const answerTextarea = document.getElementById('answerTextarea');
+    const submitBtn = document.getElementById('submitBtn');
     
     // If answer is empty, add a default message
     if (!answerTextarea.value.trim()) {
         answerTextarea.value = "Time ran out - no answer provided.";
     }
     
-    // Submit the form
-    if (form) {
-        submitted = true;
-        form.submit();
+    // Mark as submitted and disable button
+    submitted = true;
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
+    }
+    
+    // Submit the form using click event on submit button
+    if (submitBtn) {
+        submitBtn.click();
+    } else if (form) {
+        // Fallback to direct form submission
+        const formData = new FormData(form);
+        fetch(form.action, {
+            method: 'POST',
+            body: formData
+        }).then(response => {
+            if (response.ok) {
+                window.location.reload();
+            }
+        }).catch(error => {
+            console.error('Form submission error:', error);
+            // Fallback to regular form submit
+            form.submit();
+        });
     }
 }
 
 function skipQuestion() {
     if (submitted) return;
     
-    const answerTextarea = document.getElementById('answerTextarea');
-    if (answerTextarea) {
-        answerTextarea.value = "Question skipped by user.";
+    if (confirm('Are you sure you want to skip this question?')) {
+        submitted = true;
+        
+        // Clear the timer
+        if (timerInterval) {
+            clearInterval(timerInterval);
+        }
+        
+        // Submit the skip form
+        const skipForm = document.getElementById('skipForm');
+        if (skipForm) {
+            skipForm.submit();
+        } else {
+            // Fallback: fill main form and submit
+            const answerTextarea = document.getElementById('answerTextarea');
+            if (answerTextarea) {
+                answerTextarea.value = "Question skipped by user.";
+            }
+            submitAnswer();
+        }
     }
-    
-    submitAnswer();
 }
 
 // Add keyboard shortcuts

@@ -89,6 +89,13 @@
                             </button>
                             {{ form.submit(class="btn btn-primary btn-lg", id="submitBtn") }}
                         </div>
+                        
+                        <!-- Hidden skip form -->
+                        <form method="POST" id="skipForm" style="display: none;">
+                            {{ form.hidden_tag() }}
+                            <input type="hidden" name="answer" value="Question skipped by user.">
+                            <input type="hidden" name="skip" value="true">
+                        </form>
                     </form>
                 </div>
             </div>
