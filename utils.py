@@ -249,6 +249,102 @@ def seed_questions():
             'question_text': 'Describe the difference between HTTP and HTTPS.',
             'model_answer': 'HTTP transmits data in plain text, while HTTPS encrypts data using SSL/TLS protocols. HTTPS provides security, data integrity, and authentication.',
             'keywords': 'HTTP, HTTPS, plain text, encrypt, SSL, TLS, security, integrity, authentication'
+        },
+        
+        # Data Scientist Questions
+        {
+            'role': 'data_scientist',
+            'question_text': 'Explain the difference between supervised and unsupervised learning.',
+            'model_answer': 'Supervised learning uses labeled data to train models that predict outcomes. Unsupervised learning finds patterns in unlabeled data without predefined targets.',
+            'keywords': 'supervised, unsupervised, labeled, unlabeled, predict, patterns, targets, training'
+        },
+        {
+            'role': 'data_scientist',
+            'question_text': 'What is overfitting and how can you prevent it?',
+            'model_answer': 'Overfitting occurs when a model learns training data too well, performing poorly on new data. Prevent with cross-validation, regularization, feature selection, and early stopping.',
+            'keywords': 'overfitting, training data, cross-validation, regularization, feature selection, early stopping, generalization'
+        },
+        {
+            'role': 'data_scientist',
+            'question_text': 'Describe the bias-variance tradeoff in machine learning.',
+            'model_answer': 'Bias is error from oversimplified assumptions, variance is error from model sensitivity to training data. High bias causes underfitting, high variance causes overfitting.',
+            'keywords': 'bias, variance, tradeoff, underfitting, overfitting, assumptions, sensitivity, error'
+        },
+        {
+            'role': 'data_scientist',
+            'question_text': 'What are some common data preprocessing techniques?',
+            'model_answer': 'Common techniques include handling missing values, scaling/normalization, encoding categorical variables, outlier detection, feature engineering, and data cleaning.',
+            'keywords': 'preprocessing, missing values, scaling, normalization, encoding, categorical, outliers, feature engineering'
+        },
+        {
+            'role': 'data_scientist',
+            'question_text': 'Explain the purpose and process of cross-validation.',
+            'model_answer': 'Cross-validation evaluates model performance by splitting data into folds, training on some folds and testing on others. Helps assess generalization and prevent overfitting.',
+            'keywords': 'cross-validation, folds, training, testing, generalization, overfitting, model evaluation, performance'
+        },
+        
+        # DevOps Engineer Questions
+        {
+            'role': 'devops_engineer',
+            'question_text': 'What is Infrastructure as Code (IaC) and its benefits?',
+            'model_answer': 'IaC manages infrastructure through code, providing version control, reproducibility, automation, and consistency. Tools include Terraform, CloudFormation, and Ansible.',
+            'keywords': 'infrastructure as code, IaC, version control, reproducibility, automation, Terraform, CloudFormation, Ansible'
+        },
+        {
+            'role': 'devops_engineer',
+            'question_text': 'Explain the difference between containers and virtual machines.',
+            'model_answer': 'Containers share the host OS kernel and are lightweight, while VMs include a full OS and are more isolated but heavier. Containers start faster and use fewer resources.',
+            'keywords': 'containers, virtual machines, VMs, kernel, lightweight, isolated, resources, Docker, virtualization'
+        },
+        {
+            'role': 'devops_engineer',
+            'question_text': 'What is CI/CD and why is it important?',
+            'model_answer': 'CI/CD automates code integration, testing, and deployment. Continuous Integration merges code frequently, Continuous Deployment automates releases, improving quality and speed.',
+            'keywords': 'CI/CD, continuous integration, continuous deployment, automation, testing, quality, speed, pipeline'
+        },
+        {
+            'role': 'devops_engineer',
+            'question_text': 'Describe monitoring and logging best practices.',
+            'model_answer': 'Implement comprehensive monitoring with metrics, logs, and alerts. Use structured logging, centralized log management, dashboards, and proactive alerting for system health.',
+            'keywords': 'monitoring, logging, metrics, alerts, structured logging, centralized, dashboards, proactive, system health'
+        },
+        {
+            'role': 'devops_engineer',
+            'question_text': 'What is Kubernetes and its main components?',
+            'model_answer': 'Kubernetes is a container orchestration platform. Main components include Pods, Services, Deployments, Nodes, and the API Server for managing containerized applications.',
+            'keywords': 'Kubernetes, container orchestration, Pods, Services, Deployments, Nodes, API Server, containerized'
+        },
+        
+        # Software Engineer Questions  
+        {
+            'role': 'software_engineer',
+            'question_text': 'Explain object-oriented programming principles.',
+            'model_answer': 'OOP principles include Encapsulation (data hiding), Inheritance (code reuse), Polymorphism (multiple forms), and Abstraction (hiding complexity).',
+            'keywords': 'OOP, encapsulation, inheritance, polymorphism, abstraction, data hiding, code reuse, complexity'
+        },
+        {
+            'role': 'software_engineer',
+            'question_text': 'What are design patterns and give examples.',
+            'model_answer': 'Design patterns are reusable solutions to common problems. Examples: Singleton (one instance), Factory (object creation), Observer (event handling), MVC (separation of concerns).',
+            'keywords': 'design patterns, reusable, solutions, Singleton, Factory, Observer, MVC, separation of concerns'
+        },
+        {
+            'role': 'software_engineer',
+            'question_text': 'Describe different types of software testing.',
+            'model_answer': 'Types include Unit testing (individual components), Integration testing (component interactions), System testing (full system), and Acceptance testing (user requirements).',
+            'keywords': 'testing, unit testing, integration testing, system testing, acceptance testing, components, requirements'
+        },
+        {
+            'role': 'software_engineer',
+            'question_text': 'What is Big O notation and why is it important?',
+            'model_answer': 'Big O describes algorithm time/space complexity in worst-case scenarios. Important for analyzing performance, scalability, and choosing efficient algorithms.',
+            'keywords': 'Big O, notation, algorithm, complexity, time complexity, space complexity, performance, scalability, efficiency'
+        },
+        {
+            'role': 'software_engineer',
+            'question_text': 'Explain the difference between REST and GraphQL APIs.',
+            'model_answer': 'REST uses multiple endpoints with fixed data structures. GraphQL uses single endpoint with flexible queries, allowing clients to request specific data fields.',
+            'keywords': 'REST, GraphQL, API, endpoints, flexible, queries, data structures, specific data, client'
         }
     ]
     
