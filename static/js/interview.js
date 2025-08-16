@@ -96,35 +96,28 @@ function submitAnswer() {
     const submitBtn = document.getElementById('submitBtn');
     
     // If answer is empty, add a default message
-    if (!answerTextarea.value.trim()) {
-        answerTextarea.value = "Time ran out - no answer provided.";
+    if (!answerTextarea || !answerTextarea.value.trim()) {
+        if (answerTextarea) {
+            answerTextarea.value = "Time ran out - no answer provided.";
+        }
     }
     
     // Mark as submitted and disable button
     submitted = true;
+    
+    // Clear the timer
+    if (timerInterval) {
+        clearInterval(timerInterval);
+    }
+    
     if (submitBtn) {
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
     }
     
-    // Submit the form using click event on submit button
-    if (submitBtn) {
-        submitBtn.click();
-    } else if (form) {
-        // Fallback to direct form submission
-        const formData = new FormData(form);
-        fetch(form.action, {
-            method: 'POST',
-            body: formData
-        }).then(response => {
-            if (response.ok) {
-                window.location.reload();
-            }
-        }).catch(error => {
-            console.error('Form submission error:', error);
-            // Fallback to regular form submit
-            form.submit();
-        });
+    // Submit the form directly
+    if (form) {
+        form.submit();
     }
 }
 
@@ -132,24 +125,24 @@ function skipQuestion() {
     if (submitted) return;
     
     if (confirm('Are you sure you want to skip this question?')) {
-        submitted = true;
-        
         // Clear the timer
         if (timerInterval) {
             clearInterval(timerInterval);
         }
         
-        // Submit the skip form
-        const skipForm = document.getElementById('skipForm');
-        if (skipForm) {
-            skipForm.submit();
-        } else {
-            // Fallback: fill main form and submit
-            const answerTextarea = document.getElementById('answerTextarea');
-            if (answerTextarea) {
-                answerTextarea.value = "Question skipped by user.";
-            }
-            submitAnswer();
+        // Set the answer to skip message
+        const answerTextarea = document.getElementById('answerTextarea');
+        if (answerTextarea) {
+            answerTextarea.value = "Question skipped by user.";
+        }
+        
+        // Mark as submitted
+        submitted = true;
+        
+        // Get the form and submit it directly
+        const form = document.getElementById('answerForm');
+        if (form) {
+            form.submit();
         }
     }
 }
